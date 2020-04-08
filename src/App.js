@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
 import Header from './components/Header';
+import TodoSearch from './components/TodoSearch';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 
-import todData from "./todoData";
+import taskData from "./todoData";
 
 import styled from 'styled-components';
 
@@ -21,7 +22,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      todos: todData,
+      todos: todoData,
       todo: ''
     };
   }
@@ -80,6 +81,9 @@ class App extends Component {
     return (
        <AppContainer>
          <Header />
+         <TodoSearch
+            handleChange={this.handleChange}
+         />
          <TodoForm
             value={this.state.todo}
             handleChange={this.handleChange}
@@ -96,3 +100,4 @@ class App extends Component {
 }
 
 export default App;
+
