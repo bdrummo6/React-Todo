@@ -1,14 +1,96 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-class App extends React.Component {
-  // you will need a place to store your state in this component.
-  // design `App` to be the parent component of your application.
-  // this component is going to take care of state, and any change handlers you need to work with your state
+import Header from './components/Header';
+import TodoForm from './components/TodoForm';
+import TodoList from './components/TodoList';
+
+import todData from "./todoData";
+
+import styled from 'styled-components';
+
+const AppContainer = styled.div`
+   display: flex;
+   height: 100vh;
+   flex-direction: column;
+   align-content: center;
+   font-family: 'Comic Neue', cursive;
+   background: #F6F3F3;
+`;
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      todos: todData,
+      todo: ''
+    };
+  }
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: [event.target.value] });
+  };
+
+  addTodo = event => {
+    event.preventDefault();
+
+    if(this.state.todo.length === 0) {
+      return;
+    }
+
+    const newTodo = {
+      id: Date.now(),
+      task: this.state.todo,
+      completed: false
+    };
+
+    this.setState(state => ({
+      todos: [...this.state.todos, newTodo],
+      todo: ''
+    }));
+  };
+
+  toggleTodoComplete = id => {
+    let todos = this.state.todos.slice();
+    todos = todos.map(todo => {
+      if(todo.id === id) {
+        todo.completed = !todo.completed;
+        return todo;
+      } else {
+        return todo;
+      }
+    });
+
+    this.setState(state => ({
+      todos: todos
+    }));
+  };
+
+  handleClearCompleted = event => {
+    event.preventDefault();
+
+    let todos = this.state.todos.filter(todo => !todo.completed);
+
+    this.setState(state => ({
+      todos: todos,
+      todo: ''
+    }));
+  };
+
   render() {
     return (
-      <div>
-        <h2>Welcome to your Todo App!</h2>
-      </div>
+       <AppContainer>
+         <Header />
+         <TodoForm
+            value={this.state.todo}
+            handleChange={this.handleChange}
+            addTodo={this.addTodo}
+            handleClearCompleted={this.handleClearCompleted}
+         />
+         <TodoList
+            todos={this.state.todos}
+            handleToggleComplete={this.toggleTodoComplete}
+         />
+       </AppContainer>
     );
   }
 }
