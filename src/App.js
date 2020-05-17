@@ -78,6 +78,8 @@ class App extends Component {
   };
 
   render() {
+    document.title = 'React Todo App';
+     
     return (
        <AppContainer>
          <Header />
